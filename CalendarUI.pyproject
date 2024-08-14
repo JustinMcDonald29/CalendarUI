@@ -1,0 +1,15 @@
+{
+    "files": [
+        "Game.py",
+        "TimeSlot.py",
+        "League.py",
+        "LeagueWidget.py",
+        "QDTConverter.py",
+        "Schedule.py",
+        "Season.py",
+        "Team.py",
+        "TeamWidget.py",
+        "Week.py",
+        "mainwindow.py"
+    ]
+}
