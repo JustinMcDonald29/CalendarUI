@@ -61,7 +61,7 @@ class MainWin(QMainWindow):
         self.ui.teamListWidget.itemSelectionChanged.connect(self.teams_logic)
         self.ui.timeBlockButton.clicked.connect(self.set_timeBlock)
         self.ui.matchupsButton.clicked.connect(self.ui.matchupsLine.editingFinished)
-        self.ui.matchupsLine.editingFinished.connect(self.gen_league_season)
+        self.ui.matchupsLine.editingFinished.connect(self.gen_league_matchups)
         self.ui.leagueStartButton.clicked.connect(self.set_league_start)
         self.ui.calendarWidget.clicked[QDate].connect(self.calendar_logic)
 
@@ -91,10 +91,15 @@ class MainWin(QMainWindow):
 
         self.gen_league_mgmt()
 
-    def gen_league_season(self):
+    def gen_league_matchups(self):
+        try:
+            text = int(self.ui.matchupsLine.text())
+            self.active_league.gen_season(text)
+        except:
+            print("Naughty boy don't put letters in there")
         if not self.ui.matchupsLine.isModified():
             return
-        self.active_league.gen_season(int(self.ui.matchupsLine.text()))
+
         self.ui.matchupsLine.setText('')
 
 
@@ -156,6 +161,7 @@ class MainWin(QMainWindow):
     def calendar_logic(self, date):
         if self.league_start_flag:
             self.active_league.set_start_date(self.ui.calendarWidget.selectedDate())
+            self.league_start_flag = False
 
 
     def set_league_start(self):
