@@ -46,6 +46,22 @@ class MainWin(QMainWindow):
         self.ui.show()
         self.ui.weekScheduleButton.setHidden(True)
         self.ui.weekScheduleButton.setEnabled(False)
+        self.ui.setFixedSize(1136, 770)  # Example dimensions, adjust as neede
+        print(self.window)
+    
+    def loadUiWidget(self):
+        loader = QUiLoader()
+        uifile = QFile("SeasonScheduler.ui")
+        uifile.open(QFile.ReadOnly)
+        self.ui = loader.load(uifile, self)
+        uifile.close()
+
+        # Set the central widget of the main window to the loaded UI
+        self.setCentralWidget(self.ui)
+
+    def closeEvent(self, event):
+       # event.accept()  # Accept the event to close the windo  # Close the window
+        QApplication.quit()  # Quit the application
 
     def connector(self):
         self.ui.homeButton.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(0))
@@ -169,13 +185,6 @@ class MainWin(QMainWindow):
         self.league_start_flag = True
 
 
-    def loadUiWidget(self):
-        loader = QUiLoader()
-        uifile = QFile("SeasonScheduler.ui")
-        uifile.open(QFile.ReadOnly)
-        self.ui = loader.load(uifile, self)
-        uifile.close()
-
     def gen_league_mgmt(self):
         self.ui.teamListWidget.clear()
         if self.active_league is not None:
@@ -233,74 +242,7 @@ class MainWin(QMainWindow):
 if __name__ == "__main__":
     import sys
     app = QApplication(sys.argv)
+    #QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     w = MainWin()
+    w.show()
     sys.exit(app.exec())
-
-
-
-    """class Calendar(QCalendarWidget):
-        def __init__(self, parent=None):
-            super(Calendar, self).__init__(parent)
-            self.verticalHeaderFormat(None)
-
-
-    class MainWindow(QMainWindow):
-        def __init__(self, parent=None):
-            super().__init__(parent)
-            self.initUI()
-
-        def initUI(self):
-            self.left = 0
-            self.top = 0
-            self.width = 600
-            self.height = 600
-            self.cal = QCalendarWidget( self )
-            format = QTextCharFormat()
-            #self.setWindowFlags(Qt.FramelessWindowHint)
-            self.setGeometry(self.left, self.top, self.width, self.height)
-            self.setAutoFillBackground(True)
-            p = self.palette()
-            p.setColor(self.backgroundRole(), Qt.white)
-            self.setPalette(p)
-            qdim = "QPushButton {color: rgba(54,136,200,250); background-color: black; }"
-            canda_10 = QFont("Candalara", 10)
-            canda_11 = QFont("Candalara", 11)
-            segoe_9 = QFont('Segoe UI', 9)
-            format = self.cal.weekdayTextFormat( Qt.Saturday)
-            format.setForeground(QBrush(Qt.darkCyan, Qt.SolidPattern))
-            self.cal.setWeekdayTextFormat(Qt.Saturday, format)
-            self.cal.setWeekdayTextFormat(Qt.Sunday, format)
-            self.cal.setVerticalHeaderFormat(self.cal.VerticalHeaderFormat.NoVerticalHeader)
-            self.cal.setGridVisible(True)
-            self.cal.setGeometry(0,0,300,300)
-            self.cal.setFont(segoe_9)
-            self.cal.setStyleSheet(
-                "QCalendarWidget QAbstractItemView{background-color: lightGray;  color: rgba(162,201,229,255); selection-background-color: rgb(20,20,20); selection-color: rgb(200,150,255); selection-border: 1px solid black;}"
-                "QCalendarWidget QWidget{alternate-background-color: rgb(20, 20, 20); color: gray;}"
-                "QCalendarWidget QToolButton{background-color: black; color: white; font-size: 14px; font: bold; width: 70px; border: none;}"
-                "QCalendarWidget QToolButton#qt_calendar_prevmonth{qproperty-icon: url(left_arrow.png);}"
-                "QCalendarWidget QToolButton#qt_calendar_nextmonth{qproperty-icon: url(right_arrow.png);}"
-            )
-            self.button = QPushButton(self)
-            self.button.setStyleSheet(qdim)
-            self.button.setFont(canda_11)
-            self.button.setText("EXIT")
-            self.button.setGeometry(255, 510, 90, 90)
-            self.button.clicked.connect(self.exit)
-            self.cal.clicked[QDate].connect(self.showDate)
-
-        def showDate(self, date):
-            select_date = self.cal.selectedDate()
-            string_date = date.toString()
-            print(string_date)
-
-        def exit(self):
-            self.close()
-
-        def league_window(self):"""
-
-
-
-
-
-
