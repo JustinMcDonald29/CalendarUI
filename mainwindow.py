@@ -180,7 +180,6 @@ class MainWin(QMainWindow):
         self.ui.teamListWidget.clear()
         if self.active_league is not None:
             for team in self.active_league.teams:
-
                 item = TeamWidget(self.active_league.teams[team], self.ui.teamListWidget)
             self.gen_leagueDateTable()
 

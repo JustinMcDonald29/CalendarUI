@@ -10,6 +10,7 @@
         "Team.py",
         "TeamWidget.py",
         "Week.py",
-        "mainwindow.py"
+        "mainwindow.py",
+        "requirements.txt"
     ]
 }

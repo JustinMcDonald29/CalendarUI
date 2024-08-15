@@ -10,6 +10,7 @@ class Game:
     def __init__(self, a, b):
         self.team_a = a
         self.team_b = b
+        self.avail_times = dict()
         if a.league is b.league:
             self.league_set = a.league.time_slots
         else:
