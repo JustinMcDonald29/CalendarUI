@@ -18,3 +18,6 @@ class Season:
     def reset_season(self):
         self.season = list()
 
+    def get_week(self, week_num):
+        return self.season[week_num]
+

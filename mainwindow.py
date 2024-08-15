@@ -222,6 +222,13 @@ class MainWin(QMainWindow):
                 else:
                     item.setCheckState(Qt.Unchecked)
                 self.ui.timeBlockTable.setItem(i-6,col,item)
+    
+    def season_gen_check(self):
+        flag = True
+        for key in self.leagues:
+            if not (self.leagues[key].time_slots and self.leagues[key].start_date and self.leagues[key].season):
+                flag = False
+        return flag
 
 
 

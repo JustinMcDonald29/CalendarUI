@@ -22,6 +22,8 @@ class League:
     season = None
     time_slots = None
     start_date = None
+    s_week = 0
+    in_group = False
 
     def __init__(self, name):
         self.name = name
@@ -29,13 +31,13 @@ class League:
         self.teams = dict()
         self.teams_hold = dict()
         self.bye = dict()
-        self.season = Season()
         self.time_slots = dict()
 
     def gen_season(self, games):
         self.matchup_init()
         self.teams_hold = self.teams.copy()
         self.set_max(games)
+        self.season = Season()
         while not self.confirm_gp(self.max_against, True):
             self.season.reset_season()
             for team in self.teams:
@@ -357,3 +359,17 @@ class League:
     def set_start_date(self, date):
         self.start_date = date
 
+    def share_time(self, league):
+        for key in self.time_slots:
+            if key in league.time_slots and len(self.time_slots[key] & league.time_slots[key]) > 0:
+                return True
+        return False 
+
+    def get_av_games(self, day, time):
+        out = set()
+        for game in self.season.get_week(self.s_week).games:
+            if day in game.avail_times:
+                if time in game.avail_times[day]:
+                    out.add(game)
+
+                
