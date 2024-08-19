@@ -23,7 +23,8 @@ class Week:
 
     def add_game(self, game):
         self.games.append(game)
-        game.set_week(self)
+        game.set_week(self.week)
+        #print("games: ",self.games)
 
     def clear_week(self):
         self.games = []
@@ -34,14 +35,14 @@ class Week:
 
     def print_week(self):
         for g in self.games:
-            g.gprint(False)
+            g.gprint(True)
 
     def get_size(self):
         return len(self.games)
 
     def confirm_week(self, true_matchups, max_against, teams):
         matchups = copy.deepcopy(true_matchups)
-        #self.print_week()
+        self.print_week()
 
         if len(self.games) < math.floor(len(teams)/2):
             self.confirm_flag = False

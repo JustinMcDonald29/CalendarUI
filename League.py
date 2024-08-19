@@ -24,6 +24,7 @@ class League:
     start_date = None
     s_week = 0
     in_group = False
+    time_slots_enum = None
 
     def __init__(self, name):
         self.name = name
@@ -46,14 +47,14 @@ class League:
             self.teams_hold = self.teams.copy()
             self.set_max(games)
             self.season_loop(games)
-        print(self.confirm_gp(self.max_against, True))
-        print(self.confirm_gp(self.max_against, False))
+        #print(self.confirm_gp(self.max_against, True))
+        #print(self.confirm_gp(self.max_against, False))
         self.season.print_season()
-        for i in range(len(self.matchups[0])):
-            print(self.matchups[i])
+        #for i in range(len(self.matchups[0])):
+            #print(self.matchups[i])
 
     def season_loop(self, games):
-        week = 1
+        week = 0
         week = self.round_robin(week)
 
         while not self.confirm_gp(self.max_games, True):
@@ -144,7 +145,7 @@ class League:
         list_b = list()
         for i in range(math.ceil(len(temp)/2)):
             a = temp.pop(random.choice(list(temp.keys())))
-            print("a: ",a)
+            #print("a: ",a)
             list_a.append(a)
             if temp:
                 b = temp.pop(random.choice(list(temp.keys())))
@@ -152,20 +153,20 @@ class League:
             else:
                 b = "Dummy"
             list_b.append(b)
-            print("b: ",b)
+            #print("b: ",b)
         list_a_str = list()
         list_b_str = list()
         for i in range(len(list_a)):
             list_a_str.append(self.rr_test(list_a[i]))
             list_b_str.append(self.rr_test(list_b[i]))
 
-        print(list_a_str)
-        print(list_b_str)
+        #print(list_a_str)
+        #print(list_b_str)
         #print("[",list_a[0].name,',',list_a[1].name,',',list_a[2].name,',',list_a[3].name,']')
         #print("[", list_b[0].name, ',', list_b[1].name, ',', list_b[2].name, ',', list_b[3].name, ']')
         #print(list_a)
         #print(list_b)
-        while week_num < (len(self.teams))+(len(self.teams)%2):
+        while week_num < (len(self.teams))+(len(self.teams)%2) and week_num <= self.max_games:
             week = Week(week_num)
             length = len(list_a)
             for i in range(length):
@@ -173,6 +174,7 @@ class League:
                 b = list_b[i]
                 if type(a) is Team and type(b) is Team:
                     game = self.matchup(a, b)
+                    week.add_game(game)
                     a.played_against(b)
                     b.played_against(a)
                     self.matchups[a.tindex][b.tindex] += 1
@@ -183,19 +185,20 @@ class League:
             b = list_b.pop(0)
             list_a.insert(1, b)
             list_b.append(a)
-            list_a_str = list()
-            list_b_str = list()
-            for i in range(len(list_a)):
-                list_a_str.append(self.rr_test(list_a[i]))
-                list_b_str.append(self.rr_test(list_b[i]))
+            self.season.add_week(week)
+            #list_a_str = list()
+            #list_b_str = list()
+            #for i in range(len(list_a)):
+                #list_a_str.append(self.rr_test(list_a[i]))
+                #list_b_str.append(self.rr_test(list_b[i]))
 
-            print(list_a_str)
-            print(list_b_str)
-            print("End of week ", week_num,'\n-------------------------\n')
+            #print(list_a_str)
+            #print(list_b_str)
+            #print("End of week ", week_num,'\n-------------------------\n')
             week_num += 1
 
-        for i in range(len(self.matchups[0])):
-            print(self.matchups[i])
+        #for i in range(len(self.matchups[0])):
+            #print(self.matchups[i])
         return week_num
 
     def rr_test(self, item):
@@ -282,24 +285,24 @@ class League:
     Adds a team to the league
     """
     def add_team(self, name):
-        print("add_team called")
+        #print("add_team called")
         if type(name) is str:
-            print("name is a string")
+            #print("name is a string")
             if self.teams:
-                print("teams is true")
+                #print("teams is true")
                 for team in self.teams:
-                    print(self.teams[team].name)
+                    #print(self.teams[team].name)
                     if self.teams[team].name == name:
                         print("match found")
                         print(self.teams[team].name, "is the same as",name)
                         return False
-            print("Attempting to create team: ", name)
+            #print("Attempting to create team: ", name)
             ind = len(self.teams)
             team = Team(name, ind, self)
             self.teams.update({str(ind): team})
             return True
         elif type(name) is Team:
-            print("name is a team")
+            #print("name is a team")
             name.set_tindex(len(self.teams))
             self.teams.update({str(name.tindex): name})
             name.set_league(self)
@@ -353,8 +356,8 @@ class League:
 
     def set_time_slots(self, time_slots):
         self.time_slots = copy.deepcopy(time_slots)
-        print("setting time slots")
-        print(self.time_slots)
+        #print("setting time slots")
+        #print(self.time_slots)
 
     def set_start_date(self, date):
         self.start_date = date
@@ -371,5 +374,23 @@ class League:
             if day in game.avail_times:
                 if time in game.avail_times[day]:
                     out.add(game)
+
+    def get_season(self):
+        return self.season
+    
+    def get_curr_week(self):
+        out = None
+        if self.s_week < len(self.season.weeks):    
+            out = self.season.get_week(self.s_week)
+        return out
+    
+    def get_curr_games(self):
+        out = None
+        if self.s_week < len(self.season.weeks):    
+            out = self.season.get_games(self.s_week)
+        return out
+    
+    def sched_success(self):
+        self.s_week += 1
 
                 

@@ -1,4 +1,5 @@
 # This Python file uses the following encoding: utf-8
+from Weekday import Weekday
 class Game:
     team_a = None
     team_b = None
@@ -6,6 +7,9 @@ class Game:
     avail_times = None
     time = None
     league_set = None
+    con_len = None
+    code = None
+    blocked_times = None
 
     def __init__(self, a, b):
         self.team_a = a
@@ -16,6 +20,7 @@ class Game:
         else:
             self.league_set = self.merge_league()
         self.set_avail_times()
+        self.code = a.name + b.name
 
 
     def gprint(self, flag):
@@ -29,6 +34,9 @@ class Game:
 
     def get_week(self):
         return self.week.copy()
+    
+    def set_time(self, time):
+        self.time = time
 
     def get_time(self):
         return self.time.copy()
@@ -63,3 +71,13 @@ class Game:
             else:
                 working_set = self.league_set[key]
             self.avail_times.update({key : working_set})
+        
+        
+        self.con_len = len(Weekday.from_dict(self.avail_times))
+
+        
+    def get_av_times(self):
+        return self.avail_times
+    
+    def set_blocked(self):
+        self.blocked_times = self.team_a.time_blocks | self.team_b.time_blocks

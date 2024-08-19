@@ -96,7 +96,8 @@ class MainWin(QMainWindow):
             text = int(self.ui.matchupsLine.text())
             self.active_league.gen_season(text)
         except:
-            print("Naughty boy don't put letters in there")
+            pass
+            #print("Naughty boy don't put letters in there")
         if not self.ui.matchupsLine.isModified():
             return
 
@@ -170,10 +171,10 @@ class MainWin(QMainWindow):
 
 
     def loadUiWidget(self):
-        loader = QUiLoader()
+        loader = QUiLoader(self)
         uifile = QFile("SeasonScheduler.ui")
         uifile.open(QFile.ReadOnly)
-        self.ui = loader.load(uifile, self)
+        self.ui = loader.load(uifile)
         uifile.close()
 
     def gen_league_mgmt(self):

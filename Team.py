@@ -13,9 +13,10 @@ class Team:
     def __init__(self, name, index, league):
         self.name = name
         self.tindex = index
-        print("Team Successfully Created: ", name)
+        #print("Team Successfully Created: ", name)
         self.games_played = 0
         self.league = league
+        self.time_blocks = dict()
     def played_against(self, team):
         self.games_played += 1
         self.last = team.name
@@ -29,8 +30,8 @@ class Team:
 
     def set_time_blocks(self, time_blocks):
         self.time_blocks = copy.deepcopy(time_blocks)
-        print("setting time blocks")
-        print(self.time_blocks)
+        #print("setting time blocks")
+        #print(self.time_blocks)
 
     def set_name(self, name):
         self.name = name
